@@ -47,7 +47,7 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public boolean userExists(String username) {
-        String hql = "From User as usr WHERE usr.username = ?";
+        String hql = "From User as usr WHERE usr.userName = ?";
         int count = entityManager.createQuery(hql).setParameter(1,username).getResultList().size();
         return count > 0;
     }

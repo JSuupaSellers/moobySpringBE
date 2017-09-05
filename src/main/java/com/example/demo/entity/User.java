@@ -19,7 +19,37 @@ public class User implements Serializable{
     @Column(name = "email")
     private String email;
     @Column(name = "password")
-    private long password;
+    private String password;
+    @Column(name = "numMoviesSeen")
+    private int numMoviesSeen;
+    @Column(name = "numMoviesFav")
+    private int numMoviesFav;
+    @Column(name = "numFriends")
+    private int numFriends;
+
+    public int getNumMoviesSeen() {
+        return numMoviesSeen;
+    }
+
+    public void setNumMoviesSeen(int numMoviesSeen) {
+        this.numMoviesSeen = numMoviesSeen;
+    }
+
+    public int getNumMoviesFav() {
+        return numMoviesFav;
+    }
+
+    public void setNumMoviesFav(int numMoviesFav) {
+        this.numMoviesFav = numMoviesFav;
+    }
+
+    public int getNumFriends() {
+        return numFriends;
+    }
+
+    public void setNumFriends(int numFriends) {
+        this.numFriends = numFriends;
+    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -49,11 +79,11 @@ public class User implements Serializable{
         this.email = email;
     }
 
-    public long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }
