@@ -1,6 +1,7 @@
 package com.example.demo.client;
 
 import com.example.demo.entity.Article;
+import com.example.demo.entity.Friend;
 import com.example.demo.entity.FriendRequest;
 import com.example.demo.entity.User;
 import org.springframework.http.*;
@@ -104,6 +105,18 @@ public class RestClientUtil {
         URI uri = restTemplate.postForLocation(url, requestEntity);
         System.out.println(uri.getPath());
     }
+    public void addFriendPair(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/data/friend";
+        Friend obj = new Friend();
+        obj.setUserOne(3);
+        obj.setUserTwo(5);
+        HttpEntity<Friend> requestEntity = new HttpEntity<>(obj, headers);
+        URI uri = restTemplate.postForLocation(url, requestEntity);
+        System.out.println(uri.getPath());
+    }
     public void getFriendRequestsFromId(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -116,6 +129,19 @@ public class RestClientUtil {
             System.out.println("userId: "  + request.getUserId() + " from: " +
                     request.getFromUser() + " time in millis " +
                     request.getDateSent() + " status: " + request.getStatus());
+        }
+    }
+    public void getAllFriendPais(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/data/friends";
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<Friend[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Friend[].class);
+        Friend[] friendRequests = responseEntity.getBody();
+
+        for(Friend friend : friendRequests){
+            System.out.println("User1: " + friend.getUserOne() + " User2: " + friend.getUserTwo());
         }
     }
     public void deleteRequestDemo(){
@@ -139,7 +165,7 @@ public class RestClientUtil {
 
     public static void main(String args[]){
         RestClientUtil util = new RestClientUtil();
-        util.getFriendRequestsFromId();
+        util.addFriendPair();
 //        util.getAllRequestsDemo();
 //        util.addArticleDemo();
 //        util.getAllArticlesDemo();
