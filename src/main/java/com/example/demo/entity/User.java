@@ -20,36 +20,6 @@ public class User implements Serializable{
     private String email;
     @Column(name = "password")
     private String password;
-    @Column(name = "numMoviesSeen")
-    private int numMoviesSeen;
-    @Column(name = "numMoviesFav")
-    private int numMoviesFav;
-    @Column(name = "numFriends")
-    private int numFriends;
-
-    public int getNumMoviesSeen() {
-        return numMoviesSeen;
-    }
-
-    public void setNumMoviesSeen(int numMoviesSeen) {
-        this.numMoviesSeen = numMoviesSeen;
-    }
-
-    public int getNumMoviesFav() {
-        return numMoviesFav;
-    }
-
-    public void setNumMoviesFav(int numMoviesFav) {
-        this.numMoviesFav = numMoviesFav;
-    }
-
-    public int getNumFriends() {
-        return numFriends;
-    }
-
-    public void setNumFriends(int numFriends) {
-        this.numFriends = numFriends;
-    }
 
     public static long getSerialVersionUID() {
         return serialVersionUID;

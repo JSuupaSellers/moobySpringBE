@@ -165,7 +165,7 @@ public class RestClientUtil {
 
     public static void main(String args[]){
         RestClientUtil util = new RestClientUtil();
-        util.addFriendPair();
+        util.getAllUsersDemo();
 //        util.getAllRequestsDemo();
 //        util.addArticleDemo();
 //        util.getAllArticlesDemo();
