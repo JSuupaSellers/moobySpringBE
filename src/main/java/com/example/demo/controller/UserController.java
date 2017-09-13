@@ -46,7 +46,7 @@ public class UserController {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(builder.path("/user/{id}").buildAndExpand(user.getUserId()).toUri());
+        headers.setLocation(builder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Void>(headers,HttpStatus.CREATED);
     }
     @PutMapping("user")

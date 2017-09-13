@@ -1,13 +1,14 @@
 package com.example.demo.client;
 
-import com.example.demo.entity.Article;
-import com.example.demo.entity.Friend;
-import com.example.demo.entity.FriendRequest;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
 import org.springframework.http.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import sun.net.www.protocol.http.AuthenticationHeader;
 
+import java.math.BigInteger;
 import java.net.URI;
+import java.util.List;
 
 /**
  * Created by Joshua on 9/3/2017.
@@ -46,7 +47,7 @@ public class RestClientUtil {
         ResponseEntity<User[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, User[].class);
         User[] users = responseEntity.getBody();
         for(User user : users){
-            System.out.println("Id: " + user.getUserId() + " email: " + user.getEmail() + " username: " + user.getUserName());
+            System.out.println("Id: " + " email: " + user.getEmail() + " username: ");
         }
     }
 
@@ -58,7 +59,6 @@ public class RestClientUtil {
         User user = new User();
         user.setEmail("Test@email.com");
         user.setPassword("123445");
-        user.setUserName("New Test User");
         HttpEntity<User> requestEntity = new HttpEntity<>(user,headers);
         URI uri = restTemplate.postForLocation(url, requestEntity);
         System.out.println(uri.getPath());
@@ -117,6 +117,61 @@ public class RestClientUtil {
         URI uri = restTemplate.postForLocation(url, requestEntity);
         System.out.println(uri.getPath());
     }
+    public void addMovieRequest(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/data/movieRequest";
+        MovieRequest movieRequest = new MovieRequest();
+        movieRequest.setFromUser(3);
+        movieRequest.setMovieId(2314);
+        movieRequest.setTimeSent(BigInteger.valueOf(System.currentTimeMillis()));
+        movieRequest.setUserId(1);
+        HttpEntity<MovieRequest> requestEntity = new HttpEntity<MovieRequest>(movieRequest,headers);
+        URI uri = restTemplate.postForLocation(url, requestEntity);
+    }
+
+    public void register(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/registration";
+        User obj = new User();
+        obj.setName("Joshua");
+        obj.setLastName("Sellers");
+        obj.setUsername("Suupa");
+        obj.setPassword("bulldogs1");
+        obj.setEmail("joshua.sellersdq@gmail.com");
+        HttpEntity<User> requestEntity = new HttpEntity<>(obj, headers);
+        URI uri = restTemplate.postForLocation(url, requestEntity);
+        System.out.println(uri.getPath());
+    }
+
+//    public void login(){
+//
+//        // Create a new RestTemplate instance
+//        RestTemplate restTemplate = new RestTemplate();
+//        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_JSON);
+//        RestTemplate restTemplate = new RestTemplate();
+//        String url = "http://localhost:8080/registration";
+//        User obj = new User();
+//        obj.setName("Joshua");
+//        obj.setLastName("Sellers");
+//        obj.setUsername("Suupa");
+//        obj.setPassword("bulldogs1");
+//        obj.setEmail("joshua.sellersdq@gmail.com");
+//
+//        HttpEntity<User> requestEntity = new HttpEntity<>(obj, headers);
+//        try{
+//            URI uri = restTemplate.postForLocation(url, requestEntity);
+//        }catch (HttpClientErrorException e){
+//            System.out.println(e.getStatusCode());
+//            System.out.println(e.getResponseBodyAsString());
+//        }
+//
+//    }
     public void getFriendRequestsFromId(){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -129,6 +184,21 @@ public class RestClientUtil {
             System.out.println("userId: "  + request.getUserId() + " from: " +
                     request.getFromUser() + " time in millis " +
                     request.getDateSent() + " status: " + request.getStatus());
+        }
+    }
+
+    public void getAllMovieRequests(){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        RestTemplate restTemplate = new RestTemplate();
+        String url = "http://localhost:8080/data/movieRequests";
+        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<MovieRequest[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, requestEntity, MovieRequest[].class);
+        MovieRequest[] movieRequests = responseEntity.getBody();
+        for(MovieRequest request : movieRequests){
+            System.out.println("userId: "  + request.getUserId() + " from: " +
+                    request.getFromUser() + " time in millis " +
+                    request.getTimeSent());
         }
     }
     public void getAllFriendPais(){
@@ -165,7 +235,9 @@ public class RestClientUtil {
 
     public static void main(String args[]){
         RestClientUtil util = new RestClientUtil();
-        util.getAllUsersDemo();
+        util.addMovieRequest();
+        util.getAllMovieRequests();
+//        util.login();
 //        util.getAllRequestsDemo();
 //        util.addArticleDemo();
 //        util.getAllArticlesDemo();

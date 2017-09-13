@@ -14,4 +14,6 @@ public interface IUserService {
     boolean addUser(User user);
     void updateUser(User user);
     void deleteUser(int userId);
+    User findUserByEmail(String email);
+    void saveUser(User user);
 }

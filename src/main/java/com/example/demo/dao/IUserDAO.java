@@ -14,4 +14,6 @@ public interface IUserDAO {
     void addUser(User user);
     void updateUser(User user);
     boolean userExists(String username);
+    User findByEmail(String email);
+    void save(User user);
 }

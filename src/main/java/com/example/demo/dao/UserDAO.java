@@ -18,7 +18,7 @@ public class UserDAO implements IUserDAO{
     private EntityManager entityManager;
     @SuppressWarnings("unchecked")
     public List<User> getAllUsers(){
-        String hql = "FROM User as usr ORDER BY usr.userId";
+        String hql = "FROM User as usr ORDER BY usr.id";
         return (List<User>)entityManager.createQuery(hql).getResultList();
     }
 
@@ -39,16 +39,25 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public void updateUser(User user) {
-        User usr = getUserById(user.getUserId());
+        User usr = getUserById(user.getId());
         usr.setEmail(user.getEmail());
-        usr.setUserName(user.getUserName());
         entityManager.flush();
     }
 
     @Override
     public boolean userExists(String username) {
-        String hql = "From User as usr WHERE usr.userName = ?";
+        String hql = "FROM User as usr WHERE usr.userName = ?";
         int count = entityManager.createQuery(hql).setParameter(1,username).getResultList().size();
         return count > 0;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return entityManager.find(User.class, email);
+    }
+
+    @Override
+    public void save(User user) {
+        entityManager.persist(user);
     }
 }

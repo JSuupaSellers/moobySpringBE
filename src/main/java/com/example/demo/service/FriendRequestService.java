@@ -46,7 +46,12 @@ public class FriendRequestService implements IFriendRequestService {
     }
 
     @Override
-    public void deleteFriendRequest(int userId, int fromUserId) {
+    public boolean deleteFriendRequest(int userId, int fromUserId) {
         friendRequestDAO.deleteFriendRequest(userId,fromUserId);
+        if(friendRequestDAO.friendRequestExists(userId, fromUserId)){
+            return false;
+        }else{
+            return true;
+        }
     }
 }

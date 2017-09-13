@@ -52,9 +52,12 @@ public class FriendRequestController {
     }
 
     @DeleteMapping("friendRequest/{id}/{from}")
-    public ResponseEntity<Void> deleteFriendRequest(@PathVariable("id") Integer id, @PathVariable Integer from){
-        friendRequestService.deleteFriendRequest(id,from);
-        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Boolean> deleteFriendRequest(@PathVariable("id") Integer id, @PathVariable("from") Integer from){
+        boolean flag = friendRequestService.deleteFriendRequest(id,from);
+        if(!flag){
+            return new ResponseEntity<Boolean>(false, HttpStatus.CONFLICT);
+        }
+        return new ResponseEntity<Boolean>(true,HttpStatus.OK);
     }
 
 

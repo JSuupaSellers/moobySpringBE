@@ -13,5 +13,5 @@ public interface IFriendRequestService {
     FriendRequest getSingleFriendRequestForUser(int userId, int fromUserId);
     boolean sendFriendRequest(FriendRequest request);
     void updateFriendRequest(FriendRequest request);
-    void deleteFriendRequest(int userId, int fromUserId);
+    boolean deleteFriendRequest(int userId, int fromUserId);
 }
