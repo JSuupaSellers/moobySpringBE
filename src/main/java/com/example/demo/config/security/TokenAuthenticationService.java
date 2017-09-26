@@ -19,9 +19,10 @@ public class TokenAuthenticationService {
     static final String SECRET = "ThisIsASecret";
     static final String TOKEN_PREFIX = "Bearer";
     static final String HEADER_STRING = "Authorization";
+    public static String JWT;
 
     static void addAuthentication(HttpServletResponse res, String username){
-        String JWT = Jwts.builder()
+        JWT = Jwts.builder()
                 .setSubject(username)
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
@@ -42,5 +43,9 @@ public class TokenAuthenticationService {
                     new UsernamePasswordAuthenticationToken(user, null, emptyList()) : null;
         }
         return null;
+    }
+
+    static String getToken(){
+        return JWT;
     }
 }

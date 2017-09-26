@@ -33,6 +33,7 @@ public class UserServiceImpl implements UserLoginService{
     public void saveUser(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         System.out.println("PASSWORD!!: " + user.getPassword());
+        System.out.println("REGISTRATION:: " + user.getUsername());
         user.setActive(1);
         Role userRole = roleRepository.findByRole("ADMIN");
         user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
