@@ -13,4 +13,6 @@ public interface IMoviesSeenService {
     boolean addMovieToList(MoviesSeen movie);
     void updateMovieSeen(MoviesSeen movie);
     boolean deleteMovieFromList(int movieId);
+    MoviesSeen getMovieSeen(int movieId, int userId);
+    void deleteMovieSeen(MoviesSeen moviesSeen);
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.security.TokenAuthenticationService;
+import com.example.demo.entity.RegistrationResponse;
 import com.example.demo.entity.User;
 import com.example.demo.service.IUserService;
 import com.example.demo.service.UserLoginService;
@@ -45,15 +46,22 @@ public class LoginController {
     }
 
     @PostMapping("registration")
-    public ResponseEntity<Void> createNewUser(@RequestBody User user){
+    public ResponseEntity<RegistrationResponse> createNewUser(@RequestBody User user){
         User userExists = userServiceEmail.findUserByEmail(user.getEmail());
-
+        User usernameExists = userService.getUserByUserName(user.getUsername());
+        RegistrationResponse res= new RegistrationResponse();
         if(userExists != null){
-           return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            res.setResponse("Email already in use.");
+           return new ResponseEntity<>(res,HttpStatus.OK);
         }
+        if(usernameExists != null){
+            res.setResponse("Username already in use.");
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        }
+        res.setResponse("Registration Successful!");
         HttpHeaders headers = new HttpHeaders();
         System.out.println("registration!! " + user.getUsername() + " name: " + user.getName() + " email : " + user.getEmail());
         userServiceEmail.saveUser(user);
-        return new ResponseEntity<Void>(HttpStatus.CREATED);
+        return new ResponseEntity<>(res,HttpStatus.CREATED);
     }
 }

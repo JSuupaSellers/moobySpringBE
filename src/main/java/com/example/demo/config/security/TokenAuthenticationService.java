@@ -27,7 +27,7 @@ public class TokenAuthenticationService {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATIONTIME))
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-        res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+        res.addHeader(HEADER_STRING, TOKEN_PREFIX +" "+ JWT);
     }
 
     static Authentication getAuthentication(HttpServletRequest request){

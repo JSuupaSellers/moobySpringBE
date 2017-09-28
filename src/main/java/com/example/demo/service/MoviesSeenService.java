@@ -49,4 +49,13 @@ public class MoviesSeenService implements IMoviesSeenService {
             return true;
         }
     }
+
+    @Override
+    public MoviesSeen getMovieSeen(int movieId, int userId) {
+        return moviesSeenDAO.getMovieForUserWithId(movieId,userId);
+    }
+    @Override
+    public void deleteMovieSeen(MoviesSeen moviesSeen){
+        moviesSeenDAO.delete(moviesSeen);
+    }
 }

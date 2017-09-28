@@ -14,4 +14,6 @@ public interface IMoviesSeenDAO {
     void updateMovieSeen(MoviesSeen movie);
     void deleteFromSeenList(int movieId);
     boolean movieListContainsMovie(int movieId);
+    MoviesSeen getMovieForUserWithId(int movieId, int userId);
+    void delete(MoviesSeen moviesSeen);
 }

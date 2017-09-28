@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.MovieSeenResponse;
 import com.example.demo.entity.MoviesSeen;
 import com.example.demo.service.IMoviesSeenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +33,14 @@ public class MoviesSeenController {
     }
 
     @PostMapping("movieSeen")
-    public ResponseEntity<Boolean> addMovieSeen(@RequestBody MoviesSeen movie){
+    public ResponseEntity<MoviesSeen> addMovieSeen(@RequestBody MoviesSeen movie){
         boolean flag = moviesSeenService.addMovieToList(movie);
-
+        MoviesSeen res;
         if(!flag){
-            return new ResponseEntity<Boolean>(false,HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        res = moviesSeenService.getMovieSeen(movie.getMovieId(),movie.getUserId());
+        return new ResponseEntity<>(res,HttpStatus.OK);
     }
 
     @PutMapping("movieSeen")
@@ -47,12 +49,15 @@ public class MoviesSeenController {
         return new ResponseEntity<MoviesSeen>(movie, HttpStatus.OK);
     }
 
-    @DeleteMapping("movieSeen/{id}")
-    public ResponseEntity<Boolean> deleteMovieSeen(@PathVariable("id")Integer id){
-        boolean flag = moviesSeenService.deleteMovieFromList(id);
-        if(!flag){
-            return new ResponseEntity<Boolean>(false, HttpStatus.CONFLICT);
-        }
-        return new ResponseEntity<Boolean>(true,HttpStatus.OK);
+    @DeleteMapping("movieSeen")
+    public ResponseEntity<MovieSeenResponse> deleteMovieSeen(@RequestBody MoviesSeen movie){
+        MovieSeenResponse response = new MovieSeenResponse();
+        moviesSeenService.deleteMovieSeen(movie);
+//        if(!flag){
+//            response.setMovieDeleted(false);
+//            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
+//        }
+        response.setMovieDeleted(true);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 }

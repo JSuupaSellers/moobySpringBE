@@ -61,4 +61,14 @@ public class MoviesSeenDAO implements IMoviesSeenDAO {
                 .getResultList().size();
         return count > 0;
     }
+
+    @Override
+    public MoviesSeen getMovieForUserWithId(int movieId, int userId) {
+        String hql = "from MoviesSeen where movieId = :movieId and userId = :userId";
+        return (MoviesSeen)entityManager.createQuery(hql).setParameter("movieId",movieId).setParameter("userId",userId).getSingleResult();
+    }
+    @Override
+    public void delete(MoviesSeen moviesSeen){
+        entityManager.remove(moviesSeen);
+    }
 }

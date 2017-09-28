@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 /**
@@ -27,9 +28,14 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    @GetMapping("user/{username}")
+    @GetMapping("user/single/{username}/")
     public ResponseEntity<User> getUserByUserName(@PathVariable("username") String username){
         User user = userService.getUserByUserName(username);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
+    }
+    @GetMapping("user/email/{email}/")
+    public ResponseEntity<User> getUserByEmail(@PathVariable("email")String email){
+        User user = userService.findUserByEmail(email);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
@@ -39,15 +45,14 @@ public class UserController {
         return new ResponseEntity<List<User>>(list, HttpStatus.OK);
     }
 
-    @PostMapping("user")
-    public ResponseEntity<Void> addUser(@RequestBody User user, UriComponentsBuilder builder){
+    @GetMapping("user")
+    @ResponseBody
+    public String addUser(@RequestBody User user){
         boolean flag = userService.addUser(user);
         if(!flag){
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            return Boolean.FALSE.toString();
         }
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(builder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Void>(headers,HttpStatus.CREATED);
+        return Boolean.TRUE.toString();
     }
     @PutMapping("user")
     public ResponseEntity<User> updateUser(@RequestBody User user){

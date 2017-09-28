@@ -4,6 +4,7 @@ import com.example.demo.entity.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -29,7 +30,12 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public User getUserByUsername(String username) {
-        return entityManager.find(User.class, username);
+        String hql = "from User where username = :username";
+        try{
+            return (User)entityManager.createQuery(hql).setParameter("username",username).getSingleResult();
+        }catch (NoResultException e){
+            return null;
+        }
     }
 
     @Override
@@ -46,14 +52,15 @@ public class UserDAO implements IUserDAO{
 
     @Override
     public boolean userExists(String username) {
-        String hql = "FROM User as usr WHERE usr.userName = ?";
+        String hql = "FROM User as usr WHERE usr.name = ?";
         int count = entityManager.createQuery(hql).setParameter(1,username).getResultList().size();
         return count > 0;
     }
 
     @Override
     public User findByEmail(String email) {
-        return entityManager.find(User.class, email);
+        String hql = "from User where email = :email";
+        return (User)entityManager.createQuery(hql).setParameter("email", email).getSingleResult();
     }
 
     @Override
