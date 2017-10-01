@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.config.security.TokenAuthenticationService;
+import com.example.demo.entity.LoginResponse;
 import com.example.demo.entity.RegistrationResponse;
 import com.example.demo.entity.User;
 import com.example.demo.service.IUserService;
@@ -37,12 +38,20 @@ public class LoginController {
     UserLoginService userServiceEmail;
 
     @GetMapping("login")
-    public ResponseEntity<String> login(){
+    public ResponseEntity<Void> login(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("LOGIN::: " + auth.getName());
         User user = userServiceEmail.findUserByEmail(auth.getName());
-        System.out.println(user.getName());
-        System.out.println(TokenAuthenticationService.JWT + " Login");
-        return new ResponseEntity<String>(TokenAuthenticationService.JWT,HttpStatus.OK);
+        LoginResponse response = new LoginResponse();
+        if(user != null){
+            response.setResponse("Login Succesesful");
+            response.setLoginStatus(true);
+            response.setToken(TokenAuthenticationService.JWT);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        response.setResponse("Login Failed. Make sure email and password is correct.");
+        response.setLoginStatus(false);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("registration")

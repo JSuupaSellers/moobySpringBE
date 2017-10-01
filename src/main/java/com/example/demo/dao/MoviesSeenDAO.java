@@ -20,7 +20,7 @@ public class MoviesSeenDAO implements IMoviesSeenDAO {
     @SuppressWarnings("unchecked")
     @Override
     public List<MoviesSeen> getAllMoviesSeen() {
-        String hql = "FROM MoviesSeen as ms ORDER BY ms.movieID";
+        String hql = "FROM MoviesSeen as ms ORDER BY ms.userId";
         return (List<MoviesSeen>)entityManager.createQuery(hql)
                 .getResultList();
     }
@@ -37,27 +37,33 @@ public class MoviesSeenDAO implements IMoviesSeenDAO {
     }
 
     @Override
-    public void updateMovieSeen(MoviesSeen movie) {
-        MoviesSeen req = entityManager.find(MoviesSeen.class,movie.getMovieID());
-        req.setFaved(movie.isFaved());
-        req.setLiked(movie.isLiked());
-        entityManager.flush();
+    public boolean updateMovieSeen(MoviesSeen movie) {
+        String hql = "UPDATE MoviesSeen as ms SET ms.liked = ?, ms.faved = ? WHERE ms.userId = ? and ms.movieId = ?";
+        entityManager.createQuery(hql).setParameter(1,movie.isLiked()).setParameter(2,movie.isFaved()).setParameter(3,movie.getUserId())
+                .setParameter(4,movie.getMovieId());
+//        MoviesSeen req = entityManager.find(MoviesSeen.class,movie.getMovieID());
+//        req.setFaved(movie.isFaved());
+//        req.setLiked(movie.isLiked());
+//        entityManager.flush();
+        return true;
     }
 
-    private MoviesSeen getMovie(int movieId){
-        String hql = "FROM MoviesSeen as ms WHERE ms.movieID = ?";
-        return (MoviesSeen) entityManager.createQuery(hql).setParameter(1, movieId).getResultList().get(0);
+    private MoviesSeen getMovie(MoviesSeen moviesSeen){
+        String hql = "FROM MoviesSeen as ms WHERE ms.movieId = ? and ms.userId = ?";
+        return (MoviesSeen) entityManager.createQuery(hql).setParameter(1, moviesSeen.getMovieId()).setParameter(2,moviesSeen.getUserId()).getResultList().get(0);
     }
 
     @Override
-    public void deleteFromSeenList(int movieId) {
-        entityManager.remove(getMovie(movieId));
+    public void deleteFromSeenList(MoviesSeen moviesSeen) {
+//        String hql = "delete from MoviesSeen where movieId = :movieId AND userId = :userId";
+//        entityManager.createQuery(hql).setParameter("movieId", moviesSeen.getMovieId()).setParameter("userId", moviesSeen.getUserId());
+        entityManager.remove(getMovie(moviesSeen));
     }
 
     @Override
-    public boolean movieListContainsMovie(int movieId) {
-        String hql = "FROM MoviesSeen as ms WHERE ms.movieID = ?";
-        int count = entityManager.createQuery(hql).setParameter(1,movieId)
+    public boolean movieListContainsMovie(MoviesSeen movie) {
+        String hql = "FROM MoviesSeen as ms WHERE ms.userId = ? and ms.movieId = ?";
+        int count = entityManager.createQuery(hql).setParameter(1,movie.getUserId()).setParameter(2,movie.getMovieId())
                 .getResultList().size();
         return count > 0;
     }
@@ -69,6 +75,6 @@ public class MoviesSeenDAO implements IMoviesSeenDAO {
     }
     @Override
     public void delete(MoviesSeen moviesSeen){
-        entityManager.remove(moviesSeen);
+        entityManager.remove(getMovieForUserWithId(moviesSeen.getMovieId(),moviesSeen.getUserId()));
     }
 }

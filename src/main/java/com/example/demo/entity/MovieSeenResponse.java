@@ -6,6 +6,15 @@ package com.example.demo.entity;
 public class MovieSeenResponse {
     private boolean movieDeleted;
     private boolean movieAdded;
+    private boolean movieUpdated;
+
+    public boolean isMovieUpdated() {
+        return movieUpdated;
+    }
+
+    public void setMovieUpdated(boolean movieUpdated) {
+        this.movieUpdated = movieUpdated;
+    }
 
     public boolean isMovieDeleted() {
         return movieDeleted;

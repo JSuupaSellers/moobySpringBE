@@ -44,15 +44,21 @@ public class MoviesSeenController {
     }
 
     @PutMapping("movieSeen")
-    public ResponseEntity<MoviesSeen> updateMovieSeen(@RequestBody MoviesSeen movie){
-        moviesSeenService.updateMovieSeen(movie);
-        return new ResponseEntity<MoviesSeen>(movie, HttpStatus.OK);
+    public ResponseEntity<MovieSeenResponse> updateMovieSeen(@RequestBody MoviesSeen movie){
+        MovieSeenResponse response = new MovieSeenResponse();
+        if(moviesSeenService.updateMovieSeen(movie)){
+
+            response.setMovieUpdated(true);
+            return new ResponseEntity<MovieSeenResponse>(response,HttpStatus.OK);
+        }
+        response.setMovieUpdated(false);
+        return new ResponseEntity<>(response,HttpStatus.CONFLICT);
     }
 
     @DeleteMapping("movieSeen")
     public ResponseEntity<MovieSeenResponse> deleteMovieSeen(@RequestBody MoviesSeen movie){
         MovieSeenResponse response = new MovieSeenResponse();
-        moviesSeenService.deleteMovieSeen(movie);
+        moviesSeenService.deleteMovieFromList(movie);
 //        if(!flag){
 //            response.setMovieDeleted(false);
 //            return new ResponseEntity<>(response, HttpStatus.CONFLICT);

@@ -11,8 +11,8 @@ public interface IMoviesSeenService {
     List<MoviesSeen> getAllMoviesSeen();
     List<MoviesSeen> getAllMoviesSeenFor(int userId);
     boolean addMovieToList(MoviesSeen movie);
-    void updateMovieSeen(MoviesSeen movie);
-    boolean deleteMovieFromList(int movieId);
+    boolean updateMovieSeen(MoviesSeen movie);
+    boolean deleteMovieFromList(MoviesSeen movie);
     MoviesSeen getMovieSeen(int movieId, int userId);
     void deleteMovieSeen(MoviesSeen moviesSeen);
 }

@@ -27,7 +27,7 @@ public class MoviesSeenService implements IMoviesSeenService {
 
     @Override
     public boolean addMovieToList(MoviesSeen movie) {
-        if(moviesSeenDAO.movieListContainsMovie(movie.getMovieID())){
+        if(moviesSeenDAO.movieListContainsMovie(movie)){
             return false;
         }else{
             moviesSeenDAO.addMovieToSeen(movie);
@@ -36,18 +36,14 @@ public class MoviesSeenService implements IMoviesSeenService {
     }
 
     @Override
-    public void updateMovieSeen(MoviesSeen movie) {
-        moviesSeenDAO.updateMovieSeen(movie);
+    public boolean updateMovieSeen(MoviesSeen movie) {
+        return moviesSeenDAO.updateMovieSeen(movie);
     }
 
     @Override
-    public boolean deleteMovieFromList(int id) {
-        moviesSeenDAO.deleteFromSeenList(id);
-        if(moviesSeenDAO.movieListContainsMovie(id)){
-            return false;
-        }else{
-            return true;
-        }
+    public boolean deleteMovieFromList(MoviesSeen movie) {
+        moviesSeenDAO.deleteFromSeenList(movie);
+        return true;
     }
 
     @Override
