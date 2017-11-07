@@ -69,7 +69,7 @@ public class MoviesSeenDAO implements IMoviesSeenDAO {
     }
 
     @Override
-    public MoviesSeen getMovieForUserWithId(int movieId, int userId) {
+    public MoviesSeen getMovieForUserWithId(int movieId, String userId) {
         String hql = "from MoviesSeen where movieId = :movieId and userId = :userId";
         return (MoviesSeen)entityManager.createQuery(hql).setParameter("movieId",movieId).setParameter("userId",userId).getSingleResult();
     }

@@ -47,7 +47,7 @@ public class MoviesSeenService implements IMoviesSeenService {
     }
 
     @Override
-    public MoviesSeen getMovieSeen(int movieId, int userId) {
+    public MoviesSeen getMovieSeen(int movieId, String userId) {
         return moviesSeenDAO.getMovieForUserWithId(movieId,userId);
     }
     @Override

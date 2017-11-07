@@ -39,6 +39,14 @@ public class UserDAO implements IUserDAO{
     }
 
     @Override
+    @SuppressWarnings("unchecked")
+    public List<User> getUsersByUserNamePartial(String query){
+        String hql = "from User where username like :username";
+        return (List<User>)entityManager.createQuery(hql).setParameter("username",query + "%").getResultList();
+
+    }
+
+    @Override
     public void addUser(User user) {
         entityManager.persist(user);
     }

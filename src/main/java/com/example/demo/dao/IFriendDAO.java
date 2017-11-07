@@ -12,6 +12,6 @@ public interface IFriendDAO {
     List<Friend> getFriendsForUser(int userId);
     Friend getSingleFriendPair(int user1, int user2);
     void addFriend(Friend friend);
-    void deleteFriend(int user1, int user2);
-    boolean friendExists(int user1, int user2);
+    void deleteFriend(int friendId);
+    boolean friendExists(int friendId);
 }

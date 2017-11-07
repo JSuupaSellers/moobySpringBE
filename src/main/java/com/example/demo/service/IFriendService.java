@@ -12,5 +12,5 @@ public interface IFriendService {
     List<Friend> getAllFriends();
     List<Friend> getAllFriendsForUser(int userId);
     boolean addFriend(Friend friend);
-    boolean deleteFriend(Friend friend);
+    boolean deleteFriend(int friendId);
 }

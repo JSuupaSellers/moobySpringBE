@@ -13,7 +13,7 @@ public class MoviesSeen {
     private int id;
 
     @Column(name = "user_id")
-    private int userId;
+    private String userId;
 
     @Column(name = "movie_id")
     private int movieId;
@@ -30,11 +30,11 @@ public class MoviesSeen {
         this.id = id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

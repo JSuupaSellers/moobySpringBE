@@ -11,6 +11,7 @@ public interface IUserDAO {
     List<User> getAllUsers();
     User getUserById(int userId);
     User getUserByUsername(String username);
+    List<User> getUsersByUserNamePartial(String query);
     void addUser(User user);
     void updateUser(User user);
     boolean userExists(String username);

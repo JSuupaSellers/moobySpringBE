@@ -12,5 +12,5 @@ public interface IMovieRequestService {
     List<MovieRequest> getAllMovieRequestsForUser(int userId);
     MovieRequest getSingleMovieRequest(int userId, int fromUserId);
     boolean sendMovieRequest(MovieRequest request);
-    boolean deleteMovieRequest(int userId, int fromUserId);
+    boolean deleteMovieRequest(int movieRequestId);
 }

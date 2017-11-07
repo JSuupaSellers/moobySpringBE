@@ -33,6 +33,11 @@ public class UserController {
         User user = userService.getUserByUserName(username);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+    @GetMapping("user/search/{query}/")
+    public ResponseEntity<List<User>> getUsersWithQuery(@PathVariable("query") String query){
+        List<User> res = userService.getUsersWithPartial(query);
+        return new ResponseEntity<List<User>>(res, HttpStatus.OK);
+    }
     @GetMapping("user/email/{email}/")
     public ResponseEntity<User> getUserByEmail(@PathVariable("email")String email){
         User user = userService.findUserByEmail(email);
@@ -44,6 +49,7 @@ public class UserController {
         List<User> list = userService.getAllUsers();
         return new ResponseEntity<List<User>>(list, HttpStatus.OK);
     }
+
 
     @GetMapping("user")
     @ResponseBody

@@ -39,22 +39,26 @@ public class MovieRequestDAO implements IMovieRequestDAO {
                 .getResultList().get(0);
     }
 
+    private MovieRequest getMovieFromId(int movieRequestId){
+        String hql = "FROM MovieRequest as mr WHERE mr.movieRequestId = ?";
+        return (MovieRequest) entityManager.createQuery(hql).setParameter(1,movieRequestId).getSingleResult();
+    }
+
     @Override
     public void addMovieRequest(MovieRequest request) {
         entityManager.persist(request);
     }
 
     @Override
-    public boolean movieRequestExists(int userId, int fromUserId) {
-        System.out.println("From user Id:::: " + fromUserId);
-        String hql = "FROM MovieRequest as mr WHERE mr.userId = ? and mr.fromUserId = ?";
-        int count = entityManager.createQuery(hql).setParameter(1,userId).setParameter(2,fromUserId)
+    public boolean movieRequestExists(int movieRequestId) {
+        String hql = "FROM MovieRequest as mr WHERE mr.movieRequestId = ?";
+        int count = entityManager.createQuery(hql).setParameter(1,movieRequestId)
                 .getResultList().size();
         return count > 0;
     }
 
     @Override
-    public void removeMovieRequest(int userId, int fromUserId) {
-        entityManager.remove(getSingleMovieRequest(userId, fromUserId));
+    public void removeMovieRequest(int movieRequestID) {
+        entityManager.remove(getMovieFromId(movieRequestID));
     }
 }

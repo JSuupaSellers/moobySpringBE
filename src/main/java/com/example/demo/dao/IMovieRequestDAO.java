@@ -12,6 +12,6 @@ public interface IMovieRequestDAO {
     List<MovieRequest> getMovieRequestsForUserId(int userId);
     MovieRequest getSingleMovieRequest(int userId, int fromUserId);
     void addMovieRequest(MovieRequest request);
-    boolean movieRequestExists(int userId, int fromUserId);
-    void removeMovieRequest(int userId, int fromUserId);
+    boolean movieRequestExists(int movieRequestId);
+    void removeMovieRequest(int movieRequestId);
 }

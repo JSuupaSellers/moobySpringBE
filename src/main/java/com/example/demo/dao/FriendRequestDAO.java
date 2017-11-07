@@ -34,8 +34,7 @@ public class FriendRequestDAO implements IFriendRequestDAO {
     @Override
     public FriendRequest getSingleFriendRequestByUserId(int userId, int fromUserId) {
         String hql = "FROM FriendRequest as atcl WHERE atcl.userId = ? and atcl.fromUser = ?";
-        return (FriendRequest)entityManager.createQuery(hql).setParameter(1, userId).setParameter(2,fromUserId)
-                .getResultList().get(0);
+        return (FriendRequest)entityManager.createQuery(hql).setParameter(1, userId).setParameter(2,fromUserId).getSingleResult();
     }
     @SuppressWarnings("unchecked")
     @Override

@@ -27,7 +27,7 @@ public class FriendService implements IFriendService {
 
     @Override
     public boolean addFriend(Friend friend) {
-        if(friendDAO.friendExists(friend.getUserOne(),friend.getUserTwo())){
+        if(friendDAO.friendExists(friend.getFriendId())){
             return false;
         }else{
             friendDAO.addFriend(friend);
@@ -36,11 +36,11 @@ public class FriendService implements IFriendService {
     }
 
     @Override
-    public boolean deleteFriend(Friend friend) {
-        if(!friendDAO.friendExists(friend.getUserOne(),friend.getUserTwo())){
+    public boolean deleteFriend(int id) {
+        if(!friendDAO.friendExists(id)){
             return false;
         }else{
-            friendDAO.deleteFriend(friend.getUserOne(), friend.getUserTwo());
+            friendDAO.deleteFriend(id);
             return true;
         }
     }

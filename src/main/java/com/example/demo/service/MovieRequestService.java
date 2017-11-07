@@ -33,7 +33,7 @@ public class MovieRequestService implements IMovieRequestService {
     @Override
     public boolean sendMovieRequest(MovieRequest request) {
         System.out.println("Service value for from user :: " + request.getFromUser());
-        if(movieRequestDAO.movieRequestExists(request.getUserId(),request.getFromUser())){
+        if(movieRequestDAO.movieRequestExists(request.getMovieRequestId())){
             return false;
         }else {
             movieRequestDAO.addMovieRequest(request);
@@ -42,10 +42,10 @@ public class MovieRequestService implements IMovieRequestService {
     }
 
     @Override
-    public boolean deleteMovieRequest(int userId, int fromUserId) {
+    public boolean deleteMovieRequest(int movieRequestId) {
 
-        movieRequestDAO.removeMovieRequest(userId, fromUserId);
-        if(movieRequestDAO.movieRequestExists(userId, fromUserId)){
+        movieRequestDAO.removeMovieRequest(movieRequestId);
+        if(movieRequestDAO.movieRequestExists(movieRequestId)){
             return false;
         }else {
             return true;

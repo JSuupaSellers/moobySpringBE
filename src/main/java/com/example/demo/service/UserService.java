@@ -39,6 +39,10 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public List<User> getUsersWithPartial(String query){
+        return userDAO.getUsersByUserNamePartial(query);
+    }
+    @Override
     public User getUserByUserName(String username) {
         User obj = userDAO.getUserByUsername(username);
         return obj;

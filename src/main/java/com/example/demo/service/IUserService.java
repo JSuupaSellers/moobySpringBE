@@ -13,6 +13,7 @@ public interface IUserService {
     User getUserByUserName(String username);
     boolean addUser(User user);
     void updateUser(User user);
+    List<User> getUsersWithPartial(String query);
     void deleteUser(int userId);
     User findUserByEmail(String email);
     void saveUser(User user);

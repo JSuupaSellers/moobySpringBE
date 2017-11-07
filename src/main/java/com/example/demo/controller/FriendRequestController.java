@@ -1,7 +1,11 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Friend;
 import com.example.demo.entity.FriendRequest;
+import com.example.demo.entity.FriendRequestResponse;
 import com.example.demo.service.IFriendRequestService;
+import com.example.demo.service.IFriendService;
+import com.example.demo.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +25,9 @@ import java.util.List;
 public class FriendRequestController {
     @Autowired
     private IFriendRequestService friendRequestService;
+    @Autowired
+    private IUserService userService;
+    @Autowired private IFriendService friendService;
 
     @GetMapping("friendRequests")
     public ResponseEntity<List<FriendRequest>> getAllFriendRequests(){
@@ -28,21 +36,40 @@ public class FriendRequestController {
     }
 
     @GetMapping("friendRequests/{id}")
-    public ResponseEntity<List<FriendRequest>> getFriendRequestsFor(@PathVariable("id") Integer id){
+    public ResponseEntity<List<FriendRequestResponse>> getFriendRequestsFor(@PathVariable("id") Integer id){
         List<FriendRequest> list = friendRequestService.getAllFriendRequestsForUser(id);
-        return new ResponseEntity<List<FriendRequest>>(list, HttpStatus.OK);
+        List<FriendRequestResponse> resList = new ArrayList<>();
+
+        for(FriendRequest request : list){
+            FriendRequestResponse res = new FriendRequestResponse();
+            res.setTimeSent(request.getDateSent());
+            res.setToUser(request.getUserId());
+            res.setFromUser(userService.getUserById(request.getFromUser()).getUsername());
+            res.setFromUserId(request.getFromUser());
+            resList.add(res);
+        }
+        return new ResponseEntity<>(resList, HttpStatus.OK);
     }
 
     @PostMapping("friendRequest")
-    public ResponseEntity<Void> addFriendRequest(@RequestBody FriendRequest request, UriComponentsBuilder builder){
+    public ResponseEntity<FriendRequestResponse> addFriendRequest(@RequestBody FriendRequest request, UriComponentsBuilder builder){
+        request.setStatus("sent");
+        request.setDateSent(System.currentTimeMillis());
+        FriendRequestResponse response = new FriendRequestResponse();
+        for(Friend friend : friendService.getAllFriendsForUser(request.getFromUser())){
+            if(friend.getUserOne() == request.getUserId() || friend.getUserTwo() == request.getUserId()){
+                response.setMessage("Already Friends!");
+                return new ResponseEntity<FriendRequestResponse>(response,HttpStatus.OK);
+            }
+        }
         boolean flag = friendRequestService.sendFriendRequest(request);
         if(!flag){
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(response,HttpStatus.CONFLICT);
         }
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(builder.path("friendRequest/{id}").buildAndExpand(request.getUserId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("friendRequest")
