@@ -41,7 +41,7 @@ public class LoginController {
     public ResponseEntity<Void> login(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         System.out.println("LOGIN::: " + auth.getName());
-        User user = userServiceEmail.findUserByEmail(auth.getName());
+        User user = userService.findUserByEmail(auth.getName());
         LoginResponse response = new LoginResponse();
         if(user != null){
             response.setResponse("Login Succesesful");
